@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LoftMoneyPro</string>
+    <string name="hello_world">Мое первое приложение</string>
 </resources>
