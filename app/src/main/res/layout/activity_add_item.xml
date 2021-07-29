@@ -15,8 +15,7 @@
         android:layout_marginTop="127dp"
         android:layout_marginEnd="104dp"
         android:layout_marginBottom="465dp"
-        android:fontFamily="sans-serif"
-        android:hint="Название"
+        android:hint="@string/edittext_name_hint"
         android:lineSpacingExtra="0sp"
         android:textColor="#dbdbdb"
         android:textSize="24sp"
@@ -34,7 +33,7 @@
         android:layout_marginEnd="104dp"
         android:layout_marginBottom="399dp"
         android:fontFamily="sans-serif"
-        android:hint="Цена"
+        android:hint="@string/edittext_price_hint"
         android:lineSpacingExtra="0sp"
         android:textColor="#dbdbdb"
         android:textSize="24sp"
@@ -43,12 +42,15 @@
         app:layout_constraintTop_toBottomOf="@id/name_item" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="ДОБАВИТЬ"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="61dp"
+        android:layout_marginEnd="112dp"
         android:background="@null"
-        app:layout_constraintTop_toBottomOf="@id/price_item"
+        android:hint="@string/add_button_title"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/price_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
