@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">LoftMoneyPro</string>
-    <string name="hello_world">Мое первое приложение</string>
+    <string name="hello_world">MyFirstApplication</string>
+    <string name="edittext_name_hint">Name</string>
+    <string name="edittext_price_hint">Price</string>
+    <string name="add_button_title">Add</string>
 </resources>
