@@ -1,29 +1,37 @@
 package com.sdomozhirov.loftmoneypro;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.sdomozhirov.loftmoneypro.cells.Item;
+import com.sdomozhirov.loftmoneypro.cells.ItemsAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView itemsView;
     private Button btnClick;
-    private TextView txtView;
+
+    private ItemsAdapter itemsAdapter = new ItemsAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        configyreRecyclerView();
 
         btnClick = findViewById(R.id.btn_click);
-        txtView = findViewById(R.id.name_text);
+        itemsView = findViewById(R.id.recycler_view);
+
+        configureRecyclerView();
+        generateMoney();
 
                 btnClick.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -36,7 +44,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    private void generateMoney(){
+        List<Item> Items = new ArrayList<>();
+        Items.add(new Item("МОЛОКО","15000"));
+        Items.add(new Item("Salary","150000"));
 
-    private void configyreRecyclerView() {
+        itemsAdapter.setData(Items);
+    }
+
+    private void configureRecyclerView() {
+        itemsView.setAdapter(itemsAdapter);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL,false);
+
+        itemsView.setLayoutManager(layoutManager);
+        itemsView.setAdapter(itemsAdapter);
     }
 }
