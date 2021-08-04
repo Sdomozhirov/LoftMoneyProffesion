@@ -5,27 +5,80 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.sdomozhirov.loftmoneypro.cells.Item;
-import com.sdomozhirov.loftmoneypro.cells.ItemsAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView itemsView;
+/*    private RecyclerView itemsView;
     private Button btnClick;
+    private ItemsAdapter itemsAdapter = new ItemsAdapter(); */
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager;
 
-    private ItemsAdapter itemsAdapter = new ItemsAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        toolbar = findViewById(R.id.toolbar);
+        tabLayout = findViewById(R.id.tabs);
+        viewPager = findViewById(R.id.view_pager);
+        toolbar.setTitle("Учет бюджета");
+
+        viewPager.setAdapter(new BudgetPagerAdapter(getSupportFragmentManager(), getLifecycle()));
+
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                switch (position) {
+                    case 0: {
+                        tab.setText("Доходы");
+                        break;
+                    }
+                    case 1: {
+                        tab.setText("Расходы");
+                        break;
+                    }
+                    case 2: {
+                        tab.setText("Баланс");
+                        break;
+                    }
+                }
+            }
+        }).attach();
+    }
+
+    static class BudgetPagerAdapter extends FragmentStateAdapter {
+
+
+        public BudgetPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+            super(fragmentManager, lifecycle);
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            return new BudgetFragment();
+        }
+
+        @Override
+        public int getItemCount() {
+            return 3;
+        }
+    }
+
+  /*      routerTo(new Fragment());
 
         btnClick = findViewById(R.id.btn_click);
         itemsView = findViewById(R.id.recycler_view);
@@ -41,10 +94,10 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(newActivity);
                     }
                 });
+*/
 
 
-    }
-    private void generateMoney(){
+/*    private void generateMoney(){
         List<Item> Items = new ArrayList<>();
         Items.add(new Item("МОЛОКО","15000"));
         Items.add(new Item("Salary","150000"));
@@ -59,5 +112,19 @@ public class MainActivity extends AppCompatActivity {
 
         itemsView.setLayoutManager(layoutManager);
         itemsView.setAdapter(itemsAdapter);
+
+        itemsAdapter.itemsAdapterClick = new ItemsAdapterClick() {
+            @Override
+            public void onCellClick(Item Item) {
+
+            }
+
+            @Override
+            public void onTitleClick() {
+
+            }
+        };
     }
+
+ */
 }

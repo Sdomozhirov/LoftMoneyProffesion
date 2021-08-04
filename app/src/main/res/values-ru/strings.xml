@@ -6,4 +6,7 @@
     <string name="edittext_price_hint">Цена</string>
     <string name="add_button_title">Добавить</string>
     <string name="button_click_me">Нажми меня</string>
+    <string name="expenses">расходы</string>
+    <string name="incomes">доходы</string>
+    <string name="balance">Баланс</string>
 </resources>

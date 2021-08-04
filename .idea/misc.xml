@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/falcon/AndroidStudioProjects/LoftMoneyPro/app/src/main/res/layout/activity_add_item.xml" value="0.23703703703703705" />
         <entry key="..\:/Users/falcon/AndroidStudioProjects/LoftMoneyPro/app/src/main/res/layout/activity_main.xml" value="0.23072916666666668" />
+        <entry key="..\:/Users/falcon/AndroidStudioProjects/LoftMoneyPro/app/src/main/res/layout/first_fragment.xml" value="0.23125" />
+        <entry key="..\:/Users/falcon/AndroidStudioProjects/LoftMoneyPro/app/src/main/res/layout/fragment.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/falcon/AndroidStudioProjects/LoftMoneyPro/app/src/main/res/layout/fragment_budget.xml" value="0.14791666666666667" />
         <entry key="..\:/Users/falcon/AndroidStudioProjects/LoftMoneyPro/app/src/main/res/layout/items_main.xml" value="0.23072916666666668" />
       </map>
     </option>
