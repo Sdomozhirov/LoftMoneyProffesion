@@ -4,4 +4,9 @@
     <string name="edittext_name_hint">Name</string>
     <string name="edittext_price_hint">Price</string>
     <string name="add_button_title">Add</string>
+    <string name="button_click_me">ClickMe</string>
+    <string name="expenses">expenses</string>
+    <string name="incomes">incomes</string>
+    <string name="balance">balance</string>
+    <string name="fragment">BudgetFragment</string>
 </resources>
