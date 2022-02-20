@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            return new BudgetFragment();
+            return BudgetFragment.newInstance(position);
         }
 
         @Override

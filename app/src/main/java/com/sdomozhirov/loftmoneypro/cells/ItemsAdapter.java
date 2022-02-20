@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sdomozhirov.loftmoneypro.R;
@@ -18,9 +19,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
     private List<Item> ItemList = new ArrayList<>();
 
     public ItemsAdapterClick itemsAdapterClick;
+    private int positionTab;
 
-    public void setData(List<Item> Item) {
+    public void setData(List<Item> Item, int position) {
         ItemList.clear();
+        positionTab = position;
         ItemList.addAll(Item);
         notifyDataSetChanged();
     }
@@ -35,7 +38,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ItemsViewHolder holder, int position) {
-        holder.bind(ItemList.get(position));
+        holder.bind(ItemList.get(position), positionTab);
     }
 
     @Override
@@ -58,26 +61,16 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
 
         }
 
-        public void bind(final Item Item) {
+        public void bind(final Item Item, int positionTab) {
+
+            if (positionTab == 0) {
+               valueTextView.setTextColor(ContextCompat.getColor(valueTextView.getContext(), R.color.apple_green));
+            } else if (positionTab == 1) {
+                valueTextView.setTextColor(ContextCompat.getColor(valueTextView.getContext(), R.color.dark_sky_blue));
+            }
+
             titleTextView.setText(Item.getTitle());
             valueTextView.setText(String.valueOf(Item.getValue()));
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(itemsAdapterClick != null) {
-                        itemsAdapterClick.onCellClick(Item);
-                    }
-                }
-            });
-            titleTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(itemsAdapterClick != null){
-                        itemsAdapterClick.onTitleClick();
-                    }
-                }
-            });
         }
     }
 }
