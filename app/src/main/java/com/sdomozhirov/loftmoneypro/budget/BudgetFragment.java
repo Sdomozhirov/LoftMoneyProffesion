@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,14 +22,26 @@ import java.util.ArrayList;
 
 public class BudgetFragment extends Fragment {
 
+    private static final String ARG_POSITION = "arg_position";
+
     private FragmentBudgetBinding binding;
     private ItemsAdapter adapter = new ItemsAdapter();
+    private int currentPosition;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentBudgetBinding.inflate(inflater, container, false);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            currentPosition = getArguments().getInt(ARG_POSITION);
+        }
     }
 
     @Override
@@ -51,13 +64,16 @@ public class BudgetFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         binding.recyclerView.setLayoutManager(layoutManager);
         binding.recyclerView.setAdapter(adapter);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+        binding.recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
     private void zalepa() {
         ArrayList<Item> list = new ArrayList<>();
         list.add(new Item("Молоко", 100));
         list.add(new Item("колбаса", 250));
-        adapter.setData(list);
+        adapter.setData(list, currentPosition);
     }
 
     @Override
@@ -69,5 +85,13 @@ public class BudgetFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public static BudgetFragment newInstance(int position) {
+        BudgetFragment budgetFragment = new BudgetFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_POSITION, position);
+        budgetFragment.setArguments(args);
+        return budgetFragment;
     }
 }
