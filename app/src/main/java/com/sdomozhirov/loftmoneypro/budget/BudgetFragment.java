@@ -23,10 +23,14 @@ import java.util.ArrayList;
 public class BudgetFragment extends Fragment {
 
     private static final String ARG_POSITION = "arg_position";
+    public static final String ARG_ADD_NAME = "arg_name";
+    public static final String ARG_ADD_PRICE = "arg_price";
+    public static final int ARG_ADD_DATA = 100;
 
     private FragmentBudgetBinding binding;
     private ItemsAdapter adapter = new ItemsAdapter();
     private int currentPosition;
+    ArrayList<Item> list = new ArrayList<>();
 
     @Nullable
     @Override
@@ -70,7 +74,6 @@ public class BudgetFragment extends Fragment {
     }
 
     private void zalepa() {
-        ArrayList<Item> list = new ArrayList<>();
         list.add(new Item("Молоко", 100));
         list.add(new Item("колбаса", 250));
         adapter.setData(list, currentPosition);
@@ -79,6 +82,12 @@ public class BudgetFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == ARG_ADD_DATA) {
+            Item item = new Item(data.getStringExtra(ARG_ADD_NAME), data.getIntExtra(ARG_ADD_PRICE, 0));
+            list.add(item);
+            adapter.setData(list, currentPosition);
+        }
     }
 
     @Override
