@@ -3,18 +3,21 @@ package com.sdomozhirov.loftmoneypro.cells;
 public class Item {
 
     private String title;
-    private String value;
+    private int value;
 
-    public Item(String title, String value) {
+    public Item(final String title, final int value) {
         this.title = title;
-        this.value = value;
+        this.value = value;}
+
+        public String getTitle () {
+            return title;
+        }
+
+        public int getValue () {
+            return value;
+        }
+
+
+
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getValue() {
-        return value;
-    }
-}

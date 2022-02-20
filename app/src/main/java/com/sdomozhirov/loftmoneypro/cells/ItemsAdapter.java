@@ -22,12 +22,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
     public void setData(List<Item> Item) {
         ItemList.clear();
         ItemList.addAll(Item);
-
         notifyDataSetChanged();
-    }
-
-    public void setItemsAdapterClick(ItemsAdapterClick itemsAdapterClick) {
-        this.itemsAdapterClick = itemsAdapterClick;
     }
 
     @NonNull
@@ -41,7 +36,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
     @Override
     public void onBindViewHolder(@NonNull ItemsViewHolder holder, int position) {
         holder.bind(ItemList.get(position));
-
     }
 
     @Override
@@ -66,7 +60,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
 
         public void bind(final Item Item) {
             titleTextView.setText(Item.getTitle());
-            valueTextView.setText(Item.getValue());
+            valueTextView.setText(String.valueOf(Item.getValue()));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
