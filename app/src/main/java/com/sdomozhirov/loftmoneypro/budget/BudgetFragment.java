@@ -2,6 +2,7 @@ package com.sdomozhirov.loftmoneypro.budget;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,18 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.snackbar.SnackbarContentLayout;
 import com.sdomozhirov.loftmoneypro.AddItemActivity;
+import com.sdomozhirov.loftmoneypro.LoftApp;
 import com.sdomozhirov.loftmoneypro.cells.Item;
 import com.sdomozhirov.loftmoneypro.cells.ItemsAdapter;
 import com.sdomozhirov.loftmoneypro.databinding.FragmentBudgetBinding;
 
 import java.util.ArrayList;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class BudgetFragment extends Fragment {
 
@@ -42,7 +49,6 @@ public class BudgetFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             currentPosition = getArguments().getInt(ARG_POSITION);
         }
@@ -53,15 +59,24 @@ public class BudgetFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         configureRecycler();
-        zalepa();
+
+
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(requireContext(), AddItemActivity.class);
-                startActivityForResult(intent, 1);
+                intent.putExtra(AddItemActivity.ARG_POSITION, currentPosition);
+                startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        loadItems(currentPosition);
     }
 
     private void configureRecycler() {
@@ -73,21 +88,25 @@ public class BudgetFragment extends Fragment {
         binding.recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
-    private void zalepa() {
-        list.add(new Item("Молоко", 100));
-        list.add(new Item("колбаса", 250));
-        adapter.setData(list, currentPosition);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == ARG_ADD_DATA) {
-            Item item = new Item(data.getStringExtra(ARG_ADD_NAME), data.getIntExtra(ARG_ADD_PRICE, 0));
-            list.add(item);
-            adapter.setData(list, currentPosition);
+    private void loadItems(int position) {
+        String type;
+        if (position == 0) {
+            type = "income";
+        } else {
+            type = "expense";
         }
+        ((LoftApp) getActivity().getApplication()).loftAPI.getItems(type)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(remoteItems -> {
+                    if (remoteItems.getStatus().equals("success")) {
+                        adapter.setData(remoteItems.getMoneyItemsList(), position);
+                    } else {
+                        Snackbar.make(binding.getRoot(), "Произошла ошибка", Snackbar.LENGTH_LONG).show();
+                    }
+                }, throwable -> {
+                    Snackbar.make(binding.getRoot(), "Произошла ошибка", Snackbar.LENGTH_LONG).show();
+                });
     }
 
     @Override
