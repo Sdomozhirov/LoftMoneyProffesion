@@ -10,11 +10,14 @@ import com.google.android.material.snackbar.Snackbar;
 import com.sdomozhirov.loftmoneypro.databinding.ActivityAddItemBinding;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class AddItemActivity extends AppCompatActivity {
 
     public static final String ARG_POSITION = "arg_position";
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ActivityAddItemBinding binding;
     private int position;
 
@@ -56,7 +59,7 @@ public class AddItemActivity extends AppCompatActivity {
         } else {
             type = "expense";
         }
-        ((LoftApp) getApplication()).loftAPI.putItems(String.valueOf(price), name, type)
+        Disposable disposable = ((LoftApp) getApplication()).loftAPI.putItems(String.valueOf(price), name, type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -68,5 +71,12 @@ public class AddItemActivity extends AppCompatActivity {
                 }, throwable -> {
                     Snackbar.make(binding.nameItem, "Произошла ошибка", Snackbar.LENGTH_LONG).show();
                 });
+        compositeDisposable.add(disposable);
+    }
+
+    @Override
+    protected void onDestroy() {
+        compositeDisposable.dispose();
+        super.onDestroy();
     }
 }

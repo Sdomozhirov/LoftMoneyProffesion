@@ -23,6 +23,8 @@ import com.sdomozhirov.loftmoneypro.databinding.FragmentBudgetBinding;
 import java.util.ArrayList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class BudgetFragment extends Fragment {
@@ -34,6 +36,7 @@ public class BudgetFragment extends Fragment {
 
     private FragmentBudgetBinding binding;
     private ItemsAdapter adapter = new ItemsAdapter();
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     private int currentPosition;
     ArrayList<Item> list = new ArrayList<>();
 
@@ -93,7 +96,7 @@ public class BudgetFragment extends Fragment {
         } else {
             type = "expense";
         }
-        ((LoftApp) getActivity().getApplication()).loftAPI.getItems(type)
+        Disposable disposable = ((LoftApp) getActivity().getApplication()).loftAPI.getItems(type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(remoteItems -> {
@@ -105,10 +108,12 @@ public class BudgetFragment extends Fragment {
                 }, throwable -> {
                     Snackbar.make(binding.getRoot(), "Произошла ошибка", Snackbar.LENGTH_LONG).show();
                 });
+        compositeDisposable.add(disposable);
     }
 
     @Override
     public void onDestroyView() {
+        compositeDisposable.dispose();
         super.onDestroyView();
         binding = null;
     }
